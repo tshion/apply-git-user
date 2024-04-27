@@ -9,7 +9,7 @@ jobs:
     steps:
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
-      - uses: ./
+      - uses: .
         with:
           user: actions-user
       - run: bash .github/workflows/display.bash
@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: target
-      - uses: ./myaction/
+      - uses: ./myaction
         with:
           path: target
           user: github-actions
@@ -37,7 +37,7 @@ jobs:
     steps:
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
-      - uses: ./
+      - uses: .
         with:
           global: true
           user: latest-commit
