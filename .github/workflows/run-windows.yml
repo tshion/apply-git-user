@@ -9,10 +9,10 @@ jobs:
     steps:
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
-      - uses: .\
+      - uses: ./
         with:
           user: actions-user
-      - run: bash .github\workflows\display.bash
+      - run: bash .github/workflows/display.bash
 
   case2:
     runs-on: windows-latest
