@@ -1,7 +1,8 @@
 #!/bin/bash
 
-cd $PATH_DIR
 echo "path: $PATH_DIR"
+cd $PATH_DIR
+echo "moved path: $PATH_DIR"
 
 EMAIL=''
 NAME=''
