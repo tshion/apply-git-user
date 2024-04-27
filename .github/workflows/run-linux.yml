@@ -14,46 +14,39 @@ jobs:
           user: actions-user
       - run: |
           echo "path: $(PWD)"
-          echo "Local"
-          echo " name: $(git config user.name)"
-          echo " email: $(git config user.email)"
-          echo "Global"
-          echo "name: $(git config --global user.name)"
-          echo " email: $(git config --global user.email)"
+          echo "Local: $(git config user.name) <$(git config user.email)>"
+          echo "Global: (git config --global user.name) <$(git config --global user.email)>"
 
   case2:
     runs-on: ubuntu-latest
     steps:
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
-        with:
-          path: from
       - uses: ./
         with:
-          path: from
+          global: true
           user: github-actions
       - run: |
           echo "path: $(PWD)"
-          echo "Local"
-          echo " name: $(git config user.name)"
-          echo " email: $(git config user.email)"
-          echo "Global"
-          echo "name: $(git config --global user.name)"
-          echo " email: $(git config --global user.email)"
+          echo "Local: $(git config user.name) <$(git config user.email)>"
+          echo "Global: (git config --global user.name) <$(git config --global user.email)>"
 
   case3:
     runs-on: ubuntu-latest
     steps:
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
-      - uses: ./
         with:
+          path: myaction
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: target
+      - uses: ./myaction/
+        with:
+          path: target
           user: latest-commit
       - run: |
           echo "path: $(PWD)"
-          echo "Local"
-          echo " name: $(git config user.name)"
-          echo " email: $(git config user.email)"
-          echo "Global"
-          echo "name: $(git config --global user.name)"
-          echo " email: $(git config --global user.email)"
+          echo "Local: $(git config user.name) <$(git config user.email)>"
+          echo "Global: (git config --global user.name) <$(git config --global user.email)>"
