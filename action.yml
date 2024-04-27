@@ -21,4 +21,4 @@ runs:
         GLOBAL: ${{ inputs.global }}
         PATH_DIR: ${{ inputs.path }}
         USER: ${{ inputs.user }}
-      run: bash ${{ github.action_path }}/execute.bash
+      run: bash ${{ github.action_path }}execute.bash
