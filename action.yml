@@ -1,0 +1,24 @@
+name: "Apply git user"
+description: "Apply a well-known git user to 'git config user.*'."
+inputs:
+  global:
+    description: "Whether to set '--global' or not"
+    required: false
+    default: "false"
+  path:
+    description: "Relative path under $GITHUB_WORKSPACE to place the repository"
+    required: false
+    default: "."
+  user:
+    description: "Which user to apply"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      env:
+        GLOBAL: ${{ inputs.global }}
+        PATH_DIR: ${{ inputs.path }}
+        USER: ${{ inputs.user }}
+      run: bash ${{ github.action_path }}/execute.bash
