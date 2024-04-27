@@ -10,7 +10,7 @@ Apply a well-known git user to `git config user.*`.
 ## Usage
 ### Basic
 ``` yaml
-- uses: tshion/apply-git-user@v1
+- uses: tshion/apply-git-user@(version)
   with:
     user: (placeholder)
 ```
@@ -27,7 +27,7 @@ Replace `(placeholder)` with one of the following values.
   with:
     path: from
 
-- uses: tshion/apply-git-user@v1
+- uses: tshion/apply-git-user@(version)
   with:
     path: from
     user: (placeholder)
@@ -35,7 +35,7 @@ Replace `(placeholder)` with one of the following values.
 
 ### Use `git config --global user.*`
 ``` yaml
-- uses: tshion/apply-git-user@v1
+- uses: tshion/apply-git-user@(version)
   with:
     global: true
     user: (placeholder)
