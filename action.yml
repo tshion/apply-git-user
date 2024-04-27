@@ -1,5 +1,9 @@
 name: "Apply git user"
 description: "Apply a well-known git user to 'git config user.*'."
+branding:
+  icon: "user-plus"
+  color: "blue"
+
 inputs:
   global:
     description: "Whether to set '--global' or not"
