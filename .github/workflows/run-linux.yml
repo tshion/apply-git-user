@@ -1,0 +1,59 @@
+name: Run action at Linux
+
+on:
+  workflow_dispatch:
+
+jobs:
+  case1:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          user: actions-user
+      - run: |
+          echo "path: $(PWD)"
+          echo "Local"
+          echo " name: $(git config user.name)"
+          echo " email: $(git config user.email)"
+          echo "Global"
+          echo "name: $(git config --global user.name)"
+          echo " email: $(git config --global user.email)"
+
+  case2:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: from
+      - uses: ./
+        with:
+          path: from
+          user: github-actions
+      - run: |
+          echo "path: $(PWD)"
+          echo "Local"
+          echo " name: $(git config user.name)"
+          echo " email: $(git config user.email)"
+          echo "Global"
+          echo "name: $(git config --global user.name)"
+          echo " email: $(git config --global user.email)"
+
+  case3:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          user: latest-commit
+      - run: |
+          echo "path: $(PWD)"
+          echo "Local"
+          echo " name: $(git config user.name)"
+          echo " email: $(git config user.email)"
+          echo "Global"
+          echo "name: $(git config --global user.name)"
+          echo " email: $(git config --global user.email)"
