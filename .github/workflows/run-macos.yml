@@ -1,0 +1,44 @@
+name: Run action at macOS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  case1:
+    runs-on: macos-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          user: actions-user
+      - run: bash .github/workflows/display.bash
+
+  case2:
+    runs-on: macos-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: myaction
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: target
+      - uses: ./myaction/
+        with:
+          path: target
+          user: github-actions
+      - run: bash ../myaction/.github/workflows/display.bash
+        working-directory: target
+
+  case3:
+    runs-on: macos-latest
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          global: true
+          user: latest-commit
+      - run: bash .github/workflows/display.bash
