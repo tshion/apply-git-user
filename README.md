@@ -1,9 +1,11 @@
 # apply-git-user (for GitHub Actions)
 Apply a well-known git user to `git config user.*`.
 
-* actions-user
-* github-actions
-* (Latest git commit user)
+User | Sample image
+--- | :---:
+actions-user | ![actions-user](./docs/actions-user.png)
+github-actions | ![github-actions](./docs/github-actions.png)
+(Latest git commit user) | ![Latest git commit user](./docs/latest-commit.png)
 
 
 
