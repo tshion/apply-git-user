@@ -32,13 +32,14 @@ runs:
 
         EMAIL=''
         NAME=''
-        if [ $USER = 'actions-user' ]; then
+        user=${USER,,}
+        if [ $user = 'actions-user' ]; then
           EMAIL='65916846+actions-user@users.noreply.github.com'
           NAME='actions-user'
-        elif [ $USER = 'github-actions' ]; then
+        elif [ $user = 'github-actions' ]; then
           EMAIL='41898282+github-actions[bot]@users.noreply.github.com'
           NAME='github-actions[bot]'
-        elif [ $USER = 'latest-commit' ]; then
+        elif [ $user = 'latest-commit' ]; then
           EMAIL="$(git --no-pager log --format=format:'%ae' -n 1)"
           NAME="$(git --no-pager log --format=format:'%an' -n 1)"
         else
@@ -49,7 +50,7 @@ runs:
         echo "email: $EMAIL"
 
         FLAG='--local'
-        if [ $GLOBAL = 'true' ]; then
+        if [ ${GLOBAL,,} = 'true' ]; then
           FLAG='--global'
         fi
         echo "flag: $FLAG"
