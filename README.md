@@ -1,11 +1,9 @@
 # apply-git-user (for GitHub Actions)
 Apply a well-known git user to `git config user.*`.
 
-User | Sample image
---- | :---:
-actions-user | ![actions-user](./docs/actions-user.png)
-github-actions | ![github-actions](./docs/github-actions.png)
-(Latest git commit user) | ![Latest git commit user](./docs/latest-commit.png)
+* actions-user
+* github-actions
+* (Latest git commit user)
 
 
 
@@ -14,14 +12,16 @@ github-actions | ![github-actions](./docs/github-actions.png)
 ``` yaml
 - uses: tshion/apply-git-user@(version)
   with:
-    user: (placeholder)
+    user: (git user)
 ```
 
-Replace `(placeholder)` with one of the following values.
+Replace `(git user)` with one of the following values.
 
-* `actions-user`
-* `github-actions`
-* `latest-commit`
+`(git user)` | User | Description
+--- | --- | ---
+`actions-user` | ![actions-user](./docs/actions-user.png) | |
+`github-actions` | ![github-actions](./docs/github-actions.png) | |
+`latest-commit` | ![Latest git commit user](./docs/latest-commit.png) | Latest git commit user
 
 ### Use `working directory`
 ``` yaml
@@ -32,7 +32,7 @@ Replace `(placeholder)` with one of the following values.
 - uses: tshion/apply-git-user@(version)
   with:
     path: from
-    user: (placeholder)
+    user: (git user)
 ```
 
 ### Use `git config --global user.*`
@@ -40,7 +40,7 @@ Replace `(placeholder)` with one of the following values.
 - uses: tshion/apply-git-user@(version)
   with:
     global: true
-    user: (placeholder)
+    user: (git user)
 ```
 
 
