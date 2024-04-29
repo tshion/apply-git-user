@@ -30,29 +30,30 @@ runs:
         cd $PATH_DIR
         echo "moved path: $PATH_DIR"
 
-        EMAIL=''
-        NAME=''
-        if [ $USER = 'actions-user' ]; then
-          EMAIL='65916846+actions-user@users.noreply.github.com'
-          NAME='actions-user'
-        elif [ $USER = 'github-actions' ]; then
-          EMAIL='41898282+github-actions[bot]@users.noreply.github.com'
-          NAME='github-actions[bot]'
-        elif [ $USER = 'latest-commit' ]; then
-          EMAIL="$(git --no-pager log --format=format:'%ae' -n 1)"
-          NAME="$(git --no-pager log --format=format:'%an' -n 1)"
+        email=''
+        name=''
+        user=${USER,,}
+        if [ $user = 'actions-user' ]; then
+          email='65916846+actions-user@users.noreply.github.com'
+          name='actions-user'
+        elif [ $user = 'github-actions' ]; then
+          email='41898282+github-actions[bot]@users.noreply.github.com'
+          name='github-actions[bot]'
+        elif [ $user = 'latest-commit' ]; then
+          email="$(git --no-pager log --format=format:'%ae' -n 1)"
+          name="$(git --no-pager log --format=format:'%an' -n 1)"
         else
           echo "::error::Please set 'user' to either 'actions-user', 'github-actions' or 'latest-commit'."
           exit 1
         fi
-        echo "name: $NAME"
-        echo "email: $EMAIL"
+        echo "name: $name"
+        echo "email: $email"
 
-        FLAG='--local'
-        if [ $GLOBAL = 'true' ]; then
-          FLAG='--global'
+        flag='--local'
+        if [ ${GLOBAL,,} = 'true' ]; then
+          flag='--global'
         fi
-        echo "flag: $FLAG"
+        echo "flag: $flag"
 
-        git config $FLAG user.email $EMAIL
-        git config $FLAG user.name $NAME
+        git config $flag user.email $email
+        git config $flag user.name $name

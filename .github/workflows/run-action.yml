@@ -61,3 +61,8 @@ jobs:
           global: true
           user: latest-commit
       - run: bash .github/workflows/display.bash
+      - uses: ./
+        with:
+          global: TRUE
+          user: LATEST-COMMIT
+      - run: bash .github/workflows/display.bash
