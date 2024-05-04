@@ -13,6 +13,8 @@ Apply a well-known git user to `git config user.*`.
 - uses: tshion/apply-git-user@(version)
   with:
     user: (git user)
+    email: (git user email) # Set if `user` is `specific`
+    name: (git user name) # Set if `user` is `specific`
 ```
 
 Replace `(git user)` with one of the following values.
@@ -21,7 +23,8 @@ Replace `(git user)` with one of the following values.
 --- | --- | ---
 `actions-user` | ![actions-user](./docs/actions-user.png) | |
 `github-actions` | ![github-actions](./docs/github-actions.png) | |
-`latest-commit` | ![Latest git commit user](./docs/latest-commit.png) | Latest git commit user
+`latest-commit` | e.g. ![latest commit](./docs/user.png) | Latest git commit user
+`specific` | e.g. ![specific](./docs/user.png) | Set up a specific user by `email` and `name`.
 
 ### Use `working directory`
 ``` yaml
