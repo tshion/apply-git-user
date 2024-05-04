@@ -5,10 +5,18 @@ branding:
   color: orange
 
 inputs:
+  email:
+    description: "If 'user' is 'specific', what to set for 'user.email'"
+    required: false
+    default: ""
   global:
     description: "Whether to set '--global' or not"
     required: false
     default: "false"
+  name:
+    description: "If 'user' is 'specific', what to set for 'user.name'"
+    required: false
+    default: ""
   path:
     description: "Relative path under $GITHUB_WORKSPACE to place the repository"
     required: false
@@ -25,6 +33,8 @@ runs:
         GLOBAL: ${{ inputs.global }}
         PATH_DIR: ${{ inputs.path }}
         USER: ${{ inputs.user }}
+        USER_EMAIL: ${{ inputs.email }}
+        USER_NAME: ${{ inputs.name }}
       run: |
         echo "path: $PATH_DIR"
         cd $PATH_DIR
@@ -42,8 +52,11 @@ runs:
         elif [ $user = 'latest-commit' ]; then
           email="$(git --no-pager log --format=format:'%ae' -n 1)"
           name="$(git --no-pager log --format=format:'%an' -n 1)"
+        elif [ $user = 'specific' ]; then
+          email="$USER_EMAIL"
+          name="$USER_NAME"
         else
-          echo "::error::Please set 'user' to either 'actions-user', 'github-actions' or 'latest-commit'."
+          echo "::error::Please set 'user' to either 'actions-user', 'github-actions', 'latest-commit' or 'specific'."
           exit 1
         fi
         echo "name: $name"
