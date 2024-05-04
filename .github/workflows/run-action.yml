@@ -66,3 +66,21 @@ jobs:
           global: TRUE
           user: LATEST-COMMIT
       - run: bash .github/workflows/display.bash
+
+  case4:
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+      - uses: ./
+        with:
+          user: specific
+          email: hoge@example.com
+          name: hoge
+      - run: bash .github/workflows/display.bash
