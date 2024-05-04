@@ -1,0 +1,23 @@
+{
+    "name": "apply-git-user",
+    "description": "Apply a well-known git user to `git config user.*`.",
+    "engines": {
+        "node": ">=20"
+    },
+    "exports": {
+        ".": "./compiled/index.js"
+    },
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "build": "npx ncc build src/index.ts -o compiled --license licenses.txt"
+    },
+    "dependencies": {
+        "@actions/core": "^1.10.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.12.8",
+        "@vercel/ncc": "^0.38.1",
+        "typescript": "^5.4.5"
+    }
+}

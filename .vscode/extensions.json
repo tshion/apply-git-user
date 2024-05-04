@@ -1,5 +1,7 @@
 {
     "recommendations": [
-        "github.vscode-github-actions"
+        "editorconfig.editorconfig",
+        "github.vscode-github-actions",
+        "visualstudioexptteam.vscodeintellicode",
     ]
 }
