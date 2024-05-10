@@ -5,7 +5,6 @@
         "moduleResolution": "NodeNext",
         "target": "ES2022",
         "baseUrl": "./",
-        "outDir": "./compiled",
         "rootDir": "./src",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
