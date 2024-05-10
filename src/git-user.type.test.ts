@@ -1,6 +1,6 @@
 import assert from 'node:assert';
 import test from 'node:test';
-import { GitUserUtil } from './git-user.type';
+import { GitUser, GitUserUtil } from './git-user.type';
 
 test('GitUser.ACTIONS_USER', () => {
   const original: string = 'Actions-User';
@@ -9,8 +9,9 @@ test('GitUser.ACTIONS_USER', () => {
     original.toLowerCase(),
     original.toUpperCase(),
   ];
-  successCases.forEach(text => {
-    assert.ok(GitUserUtil.is(text), `${text} is passed!`);
+  successCases.forEach(x => {
+    const parsed = GitUserUtil.parseOrNull(x);
+    assert.strictEqual(parsed, GitUser.ACTIONS_USER);
   });
 });
 
@@ -21,8 +22,9 @@ test('GitUser.GITHUB_ACTIONS', () => {
     original.toLowerCase(),
     original.toUpperCase(),
   ];
-  successCases.forEach(text => {
-    assert.ok(GitUserUtil.is(text), `${text} is passed!`);
+  successCases.forEach(x => {
+    const parsed = GitUserUtil.parseOrNull(x);
+    assert.strictEqual(parsed, GitUser.GITHUB_ACTIONS);
   });
 });
 
@@ -33,8 +35,9 @@ test('GitUser.LATEST_COMMIT', () => {
     original.toLowerCase(),
     original.toUpperCase(),
   ];
-  successCases.forEach(text => {
-    assert.ok(GitUserUtil.is(text), `${text} is passed!`);
+  successCases.forEach(x => {
+    const parsed = GitUserUtil.parseOrNull(x);
+    assert.strictEqual(parsed, GitUser.LATEST_COMMIT);
   });
 });
 
@@ -45,18 +48,21 @@ test('GitUser.SPECIFIC', () => {
     original.toLowerCase(),
     original.toUpperCase(),
   ];
-  successCases.forEach(text => {
-    assert.ok(GitUserUtil.is(text), `${text} is passed!`);
+  successCases.forEach(x => {
+    const parsed = GitUserUtil.parseOrNull(x);
+    assert.strictEqual(parsed, GitUser.SPECIFIC);
   });
 });
 
 test('None of GitUser', () => {
   const failCases = [
+    'abcdefg',
     '',
     null,
     undefined,
   ];
-  failCases.forEach(text => {
-    assert.strictEqual(GitUserUtil.is(text), false);
+  failCases.forEach(x => {
+    const parsed = GitUserUtil.parseOrNull(x);
+    assert.strictEqual(parsed, null);
   });
 });
