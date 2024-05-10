@@ -20,7 +20,7 @@ inputs:
   path:
     description: "Relative path under $GITHUB_WORKSPACE to place the repository"
     required: false
-    default: "."
+    default: ""
   user:
     description: "Which user to apply"
     required: true

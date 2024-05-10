@@ -16,6 +16,7 @@
     * [actions/typescript-action: Create a TypeScript Action with tests, linting, workflow, publishing, and versioning](https://github.com/actions/typescript-action)
 
 ### Dependencies
+* https://github.com/actions/toolkit
 * https://github.com/microsoft/TypeScript
 * https://github.com/privatenumber/tsx
 * https://github.com/vercel/ncc
