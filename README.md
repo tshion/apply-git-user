@@ -4,6 +4,7 @@ Apply a well-known git user to `git config user.*`.
 * actions-user
 * github-actions
 * (Latest git commit user)
+* (Specific user)
 
 
 
@@ -24,7 +25,7 @@ Replace `(git user)` with one of the following values.
 `actions-user` | ![actions-user](./docs/actions-user.png) | |
 `github-actions` | ![github-actions](./docs/github-actions.png) | |
 `latest-commit` | e.g. ![latest commit](./docs/user.png) | Latest git commit user
-`specific` | e.g. ![specific](./docs/user.png) | Set up a specific user by `email` and `name`.
+`specific` | e.g. ![specific](./docs/user.png) | Set up a specific user by `(git user email)` and `(git user name)`.
 
 ### Use `working directory`
 ``` yaml
@@ -45,6 +46,12 @@ Replace `(git user)` with one of the following values.
     global: true
     user: (git user)
 ```
+
+
+
+## Notes
+* If you want to know node-version, see [.node-version](./.node-version)
+* If you wish to develop this, see [CONTRIBUTING.md](./docs/CONTRIBUTING.md)
 
 
 
