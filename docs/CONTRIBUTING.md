@@ -5,7 +5,7 @@
 
 ### Setting Up
 1. git clone this repository
-1. `npm install`
+1. `npm ci`
 
 
 
