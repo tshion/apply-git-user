@@ -18,12 +18,21 @@ export type GitUser = typeof GitUser[keyof typeof GitUser];
  */
 export class GitUserUtil {
 
-  private static values = Object.values(GitUser);
+  private static get values() {
+    return Object.values(GitUser);
+  }
 
 
   /** `GitUser` への変換。失敗時は `null` */
   public static parseOrNull(value: unknown): GitUser | null {
     const text = `${value}`.toLowerCase();
     return this.values.find(x => x === text) ?? null;
+  }
+
+  /** 選択肢用のテキストへ変換 */
+  public static toTextForSelection() {
+    const list = GitUserUtil.values.map(x => `'${x}'`);
+    const lastItem = list.pop()!;
+    return `${list.join(', ')} or ${lastItem}`;
   }
 }

@@ -8,7 +8,7 @@ import { GitUser, GitUserUtil } from './git-user.type';
 
     const user = GitUserUtil.parseOrNull(core.getInput('user', { required: true }));
     if (!user) {
-      throw Error(`Please set 'user' to either 'actions-user', 'github-actions', 'latest-commit' or 'specific'.`);
+      throw Error(`Please set 'user' to either ${GitUserUtil.toTextForSelection()}.`);
     }
 
     let email = '';

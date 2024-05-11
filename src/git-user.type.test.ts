@@ -2,7 +2,7 @@ import assert from 'node:assert';
 import test from 'node:test';
 import { GitUser, GitUserUtil } from './git-user.type';
 
-test('GitUser.ACTIONS_USER', () => {
+test('GitUserUtil.parseOrNull(ACTIONS_USER)', () => {
   const original: string = 'Actions-User';
   const successCases = [
     original,
@@ -15,7 +15,7 @@ test('GitUser.ACTIONS_USER', () => {
   });
 });
 
-test('GitUser.GITHUB_ACTIONS', () => {
+test('GitUserUtil.parseOrNull(GITHUB_ACTIONS)', () => {
   const original: string = 'GitHub-Actions';
   const successCases = [
     original,
@@ -28,7 +28,7 @@ test('GitUser.GITHUB_ACTIONS', () => {
   });
 });
 
-test('GitUser.LATEST_COMMIT', () => {
+test('GitUserUtil.parseOrNull(LATEST_COMMIT)', () => {
   const original: string = 'Latest-Commit';
   const successCases = [
     original,
@@ -41,7 +41,7 @@ test('GitUser.LATEST_COMMIT', () => {
   });
 });
 
-test('GitUser.SPECIFIC', () => {
+test('GitUserUtil.parseOrNull(SPECIFIC)', () => {
   const original: string = 'Specific';
   const successCases = [
     original,
@@ -54,7 +54,7 @@ test('GitUser.SPECIFIC', () => {
   });
 });
 
-test('None of GitUser', () => {
+test('GitUserUtil.parseOrNull(None of GitUser)', () => {
   const failCases = [
     'abcdefg',
     '',
@@ -65,4 +65,18 @@ test('None of GitUser', () => {
     const parsed = GitUserUtil.parseOrNull(x);
     assert.strictEqual(parsed, null);
   });
+});
+
+test('GitUser.toTextForSelection', () => {
+  const list = Object.values(GitUser);
+  const target = GitUserUtil.toTextForSelection();
+
+  list.forEach(item => {
+    assert.strictEqual(target.includes(item), true);
+  });
+  assert.strictEqual(
+    [...target].filter(x => x === ',').length,
+    list.length - 2
+  );
+  assert.strictEqual(target.includes('or'), true);
 });
