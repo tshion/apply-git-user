@@ -10,7 +10,7 @@
     "license": "MIT",
     "private": true,
     "scripts": {
-        "build": "npx ncc build src/index.ts -o compiled --license licenses.txt --minify",
+        "build": "npx ncc build src/index.ts -o compiled --license licenses.txt",
         "test": "node --import tsx --test src/*.test.ts"
     },
     "dependencies": {
