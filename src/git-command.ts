@@ -2,8 +2,9 @@
  * (型エイリアス) 実行するGit コマンド情報
  */
 export type GitCommand = {
-  commandUserEmail: string,
-  commandUserName: string,
+  commandLine: string,
+  argsUserEmail: string[],
+  argsUserName: string[],
   options?: { cwd?: string },
 };
 
@@ -41,15 +42,19 @@ export class GitCommandBuilder {
     );
   }
 
-  public forSpecific(email: string, name: string) {
+  public forSpecific(email: string, name: string): GitCommand {
     if (!email || !name) {
       throw Error('Please set email and name.');
     }
 
-    const flag = this.isGlobal ? '--global' : '--local';
+    const args = [
+      'config',
+      this.isGlobal ? '--global' : '--local',
+    ];
     return {
-      commandUserEmail: `git config ${flag} user.email ${email}`,
-      commandUserName: `git config ${flag} user.name ${name}`,
+      commandLine: 'git',
+      argsUserEmail: [...args, 'user.email', email],
+      argsUserName: [...args, 'user.name', name],
       options: !!this.path ? { cwd: this.path } : undefined,
     };
   }
