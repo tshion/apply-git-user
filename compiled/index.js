@@ -26177,10 +26177,14 @@ class GitCommandBuilder {
         if (!email || !name) {
             throw Error('Please set email and name.');
         }
-        const flag = this.isGlobal ? '--global' : '--local';
+        const args = [
+            'config',
+            this.isGlobal ? '--global' : '--local',
+        ];
         return {
-            commandUserEmail: `git config ${flag} user.email ${email}`,
-            commandUserName: `git config ${flag} user.name ${name}`,
+            commandLine: 'git',
+            argsUserEmail: [...args, 'user.email', email],
+            argsUserName: [...args, 'user.name', name],
             options: !!this.path ? { cwd: this.path } : undefined,
         };
     }
@@ -26285,8 +26289,8 @@ const git_user_type_1 = __nccwpck_require__(9612);
                 gitCommand = builder.forSpecific(core.getInput('email'), core.getInput('name'));
                 break;
         }
-        await (0, exec_1.exec)(`"${gitCommand.commandUserEmail}"`, undefined, gitCommand.options);
-        await (0, exec_1.exec)(`"${gitCommand.commandUserName}"`, undefined, gitCommand.options);
+        await (0, exec_1.exec)(gitCommand.commandLine, gitCommand.argsUserEmail, gitCommand.options);
+        await (0, exec_1.exec)(gitCommand.commandLine, gitCommand.argsUserName, gitCommand.options);
     }
     catch (error) {
         if (error instanceof Error) {

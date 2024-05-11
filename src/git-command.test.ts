@@ -4,12 +4,12 @@ import { GitCommandBuilder } from './git-command';
 
 test('GitCommandBuilder.isGlobal', () => {
   const globalCommand = new GitCommandBuilder(true, '').forActionsUser();
-  assert.ok(globalCommand.commandUserEmail.includes('--global'));
-  assert.ok(globalCommand.commandUserName.includes('--global'));
+  assert.ok(globalCommand.argsUserEmail.includes('--global'));
+  assert.ok(globalCommand.argsUserName.includes('--global'));
 
   const localCommand = new GitCommandBuilder(false, '').forActionsUser();
-  assert.ok(localCommand.commandUserEmail.includes('--local'));
-  assert.ok(localCommand.commandUserName.includes('--local'));
+  assert.ok(localCommand.argsUserEmail.includes('--local'));
+  assert.ok(localCommand.argsUserName.includes('--local'));
 });
 
 test('GitCommandBuilder.path', () => {
