@@ -26,15 +26,5 @@ inputs:
     required: true
 
 runs:
-  using: "composite"
-  steps:
-    - shell: bash
-      env:
-        GLOBAL: ${{ inputs.global }}
-        PATH_DIR: ${{ inputs.path }}
-        USER: ${{ inputs.user }}
-        USER_EMAIL: ${{ inputs.email }}
-        USER_NAME: ${{ inputs.name }}
-      run: |
-        using: node20
-        main: compiled/index.js
+  using: node20
+  main: compiled/index.js
