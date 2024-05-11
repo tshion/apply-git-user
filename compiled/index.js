@@ -26171,7 +26171,7 @@ class GitCommandBuilder {
         return this.forSpecific('41898282+github-actions[bot]@users.noreply.github.com', 'github-actions[bot]');
     }
     forLatestCommit() {
-        return this.forSpecific(`$(git --no-pager log --format=format:'%ae' -n 1)`, `$(git --no-pager log --format=format:'%an' -n 1)`);
+        return this.forSpecific(`"$(git --no-pager log --format=format:'%ae' -n 1)"`, `"$(git --no-pager log --format=format:'%an' -n 1)"`);
     }
     forSpecific(email, name) {
         if (!email || !name) {
