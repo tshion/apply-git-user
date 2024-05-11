@@ -37,8 +37,8 @@ export class GitCommandBuilder {
 
   public forLatestCommit() {
     return this.forSpecific(
-      `$(git --no-pager log --format=format:'%ae' -n 1)`,
-      `$(git --no-pager log --format=format:'%an' -n 1)`,
+      `"$(git --no-pager log --format=format:'%ae' -n 1)"`,
+      `"$(git --no-pager log --format=format:'%an' -n 1)"`,
     );
   }
 
