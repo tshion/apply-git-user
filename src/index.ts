@@ -33,8 +33,8 @@ import { GitUser, GitUserUtil } from './git-user.type';
         break;
     }
 
-    await exec(gitCommand.commandUserEmail, undefined, gitCommand.options);
-    await exec(gitCommand.commandUserName, undefined, gitCommand.options);
+    await exec(`"${gitCommand.commandUserEmail}"`, undefined, gitCommand.options);
+    await exec(`"${gitCommand.commandUserName}"`, undefined, gitCommand.options);
   } catch (error: unknown) {
     if (error instanceof Error) {
       core.setFailed(error.message);

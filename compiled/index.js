@@ -26285,8 +26285,8 @@ const git_user_type_1 = __nccwpck_require__(9612);
                 gitCommand = builder.forSpecific(core.getInput('email'), core.getInput('name'));
                 break;
         }
-        await (0, exec_1.exec)(gitCommand.commandUserEmail, undefined, gitCommand.options);
-        await (0, exec_1.exec)(gitCommand.commandUserName, undefined, gitCommand.options);
+        await (0, exec_1.exec)(`"${gitCommand.commandUserEmail}"`, undefined, gitCommand.options);
+        await (0, exec_1.exec)(`"${gitCommand.commandUserName}"`, undefined, gitCommand.options);
     }
     catch (error) {
         if (error instanceof Error) {
