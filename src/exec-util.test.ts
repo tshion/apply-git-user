@@ -1,7 +1,7 @@
 import { ExecOptions, ExecOutput } from '@actions/exec';
+import assert from 'node:assert';
 import test from 'node:test';
 import { ExecUtil } from './exec-util';
-import assert from 'node:assert';
 
 test('ExecUtil.setupGitUser', async context => {
   await context.test(`Reject 'exec'`, async c => {
