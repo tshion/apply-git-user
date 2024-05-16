@@ -1,7 +1,6 @@
 import * as core from '@actions/core';
-import { exec } from '@actions/exec';
-import { GitCommand, GitCommandBuilder } from './git-command';
 import { GitUser, GitUserUtil } from './git-user.type';
+import { SetGitUserBuilder } from './set-git-user-builder';
 
 +async function () {
   try {
@@ -10,31 +9,29 @@ import { GitUser, GitUserUtil } from './git-user.type';
       throw Error(`Please set 'user' to either ${GitUserUtil.toTextForSelection()}.`);
     }
 
-    const builder = new GitCommandBuilder(
+    const builder = new SetGitUserBuilder(
       core.getBooleanInput('global'),
       core.getInput('path'),
     );
-    let gitCommand: GitCommand;
+    let promise: Promise<void>;
     switch (user) {
       case GitUser.ACTIONS_USER:
-        gitCommand = builder.forActionsUser();
+        promise = builder.forActionsUser();
         break;
       case GitUser.GITHUB_ACTIONS:
-        gitCommand = builder.forGitHubActions();
+        promise = builder.forGitHubActions();
         break;
       case GitUser.LATEST_COMMIT:
-        gitCommand = builder.forLatestCommit();
+        promise = builder.forLatestCommit();
         break;
       case GitUser.SPECIFIC:
-        gitCommand = builder.forSpecific(
+        promise = builder.forSpecific(
           core.getInput('email'),
           core.getInput('name'),
         );
         break;
     }
-
-    await exec(gitCommand.commandLine, gitCommand.argsUserEmail, gitCommand.options);
-    await exec(gitCommand.commandLine, gitCommand.argsUserName, gitCommand.options);
+    await promise;
   } catch (error: unknown) {
     if (error instanceof Error) {
       core.setFailed(error.message);

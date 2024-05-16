@@ -26147,49 +26147,57 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 7094:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ 9320:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.GitCommandBuilder = void 0;
+exports.ExecUtil = void 0;
+const exec_1 = __nccwpck_require__(1514);
 /**
- * 実行するGit コマンド情報の構築
+ * {@link exec} を使った処理のユーティリティ
  */
-class GitCommandBuilder {
-    isGlobal;
-    path;
-    constructor(isGlobal, path) {
-        this.isGlobal = isGlobal;
-        this.path = path;
+class ExecUtil {
+    /** Wrap {@link exec} for test. */
+    static _exec(commandLine, args, options) {
+        return (0, exec_1.exec)(commandLine, args, options);
     }
-    forActionsUser() {
-        return this.forSpecific('65916846+actions-user@users.noreply.github.com', 'actions-user');
+    /** Wrap {@link getExecOutput} for test. */
+    static _getExecOutput(commandLine, args, options) {
+        return (0, exec_1.getExecOutput)(commandLine, args, options);
     }
-    forGitHubActions() {
-        return this.forSpecific('41898282+github-actions[bot]@users.noreply.github.com', 'github-actions[bot]');
-    }
-    forLatestCommit() {
-        return this.forSpecific(`"$(git --no-pager log --format=format:'%ae' -n 1)"`, `"$(git --no-pager log --format=format:'%an' -n 1)"`);
-    }
-    forSpecific(email, name) {
-        if (!email || !name) {
+    static async setupGitUser(isGlobal, path, userEmail, userName) {
+        if (!userEmail || !userName) {
             throw Error('Please set email and name.');
         }
         const args = [
             'config',
-            this.isGlobal ? '--global' : '--local',
+            isGlobal ? '--global' : '--local',
         ];
-        return {
-            commandLine: 'git',
-            argsUserEmail: [...args, 'user.email', email],
-            argsUserName: [...args, 'user.name', name],
-            options: !!this.path ? { cwd: this.path } : undefined,
-        };
+        const options = !!path ? { cwd: path } : undefined;
+        await this._exec('git', [...args, 'user.email', userEmail], options);
+        await this._exec('git', [...args, 'user.name', userName], options);
+    }
+    static async setupGitUserByCommit(isGlobal, path) {
+        const args = [
+            '--no-pager',
+            'log',
+            '-n 1',
+        ];
+        const options = !!path ? { cwd: path } : undefined;
+        const resultEmail = await this._getExecOutput('git', [...args, `--format=format:'%ae'`], options);
+        if (resultEmail.exitCode !== 0) {
+            throw new Error(resultEmail.stderr);
+        }
+        const resultName = await this._getExecOutput('git', [...args, `--format=format:'%an'`], options);
+        if (resultName.exitCode !== 0) {
+            throw new Error(resultName.stderr);
+        }
+        return this.setupGitUser(isGlobal, path, resultEmail.stdout, resultName.stdout);
     }
 }
-exports.GitCommandBuilder = GitCommandBuilder;
+exports.ExecUtil = ExecUtil;
 
 
 /***/ }),
@@ -26264,33 +26272,31 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
-const exec_1 = __nccwpck_require__(1514);
-const git_command_1 = __nccwpck_require__(7094);
 const git_user_type_1 = __nccwpck_require__(9612);
+const set_git_user_builder_1 = __nccwpck_require__(6072);
 +async function () {
     try {
         const user = git_user_type_1.GitUserUtil.parseOrNull(core.getInput('user', { required: true }));
         if (!user) {
             throw Error(`Please set 'user' to either ${git_user_type_1.GitUserUtil.toTextForSelection()}.`);
         }
-        const builder = new git_command_1.GitCommandBuilder(core.getBooleanInput('global'), core.getInput('path'));
-        let gitCommand;
+        const builder = new set_git_user_builder_1.SetGitUserBuilder(core.getBooleanInput('global'), core.getInput('path'));
+        let promise;
         switch (user) {
             case git_user_type_1.GitUser.ACTIONS_USER:
-                gitCommand = builder.forActionsUser();
+                promise = builder.forActionsUser();
                 break;
             case git_user_type_1.GitUser.GITHUB_ACTIONS:
-                gitCommand = builder.forGitHubActions();
+                promise = builder.forGitHubActions();
                 break;
             case git_user_type_1.GitUser.LATEST_COMMIT:
-                gitCommand = builder.forLatestCommit();
+                promise = builder.forLatestCommit();
                 break;
             case git_user_type_1.GitUser.SPECIFIC:
-                gitCommand = builder.forSpecific(core.getInput('email'), core.getInput('name'));
+                promise = builder.forSpecific(core.getInput('email'), core.getInput('name'));
                 break;
         }
-        await (0, exec_1.exec)(gitCommand.commandLine, gitCommand.argsUserEmail, gitCommand.options);
-        await (0, exec_1.exec)(gitCommand.commandLine, gitCommand.argsUserName, gitCommand.options);
+        await promise;
     }
     catch (error) {
         if (error instanceof Error) {
@@ -26298,6 +26304,42 @@ const git_user_type_1 = __nccwpck_require__(9612);
         }
     }
 }();
+
+
+/***/ }),
+
+/***/ 6072:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.SetGitUserBuilder = void 0;
+const exec_util_1 = __nccwpck_require__(9320);
+/**
+ * Git ユーザーを設定する際の情報構築
+ */
+class SetGitUserBuilder {
+    isGlobal;
+    path;
+    constructor(isGlobal, path) {
+        this.isGlobal = isGlobal;
+        this.path = path;
+    }
+    forActionsUser() {
+        return exec_util_1.ExecUtil.setupGitUser(this.isGlobal, this.path, '65916846+actions-user@users.noreply.github.com', 'actions-user');
+    }
+    forGitHubActions() {
+        return exec_util_1.ExecUtil.setupGitUser(this.isGlobal, this.path, '41898282+github-actions[bot]@users.noreply.github.com', 'github-actions[bot]');
+    }
+    forLatestCommit() {
+        return exec_util_1.ExecUtil.setupGitUserByCommit(this.isGlobal, this.path);
+    }
+    forSpecific(email, name) {
+        return exec_util_1.ExecUtil.setupGitUser(this.isGlobal, this.path, email, name);
+    }
+}
+exports.SetGitUserBuilder = SetGitUserBuilder;
 
 
 /***/ }),
