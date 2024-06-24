@@ -22,5 +22,5 @@
 * https://github.com/vercel/ncc
 
 ### Others
-* [Test runner | Node.js v20.13.1 Documentation](https://nodejs.org/docs/latest-v20.x/api/test.html)
+* [Test runner | Node.js v20.x Documentation](https://nodejs.org/docs/latest-v20.x/api/test.html)
     * [How to run the Node built-in testrunner for TypeScript files inside a specific directory? · Issue #3902 · nodejs/help](https://github.com/nodejs/help/issues/3902#issuecomment-1807916369)
