@@ -1,0 +1,54 @@
+name: 140 Create version pull request
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionMajor:
+        description: 'バージョン情報: major'
+        required: true
+        type: string
+      versionMinor:
+        description: 'バージョン情報: minor'
+        required: true
+        type: string
+      versionPatch:
+        description: 'バージョン情報: patch'
+        required: true
+        type: string
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  create-version-pr:
+    if: ${{ github.ref_type == 'branch' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
+      # https://github.com/actions/setup-node
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+
+      # https://github.com/actions/checkout/issues/13#issuecomment-724415212
+      - name: Set up git user
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Create a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: "${{ inputs.versionMajor }}.${{ inputs.versionMinor }}.${{ inputs.versionPatch }}"
+        run: |
+          branch="feature/$VERSION"
+          git switch --create "$branch"
+          npm version "$VERSION" --message "Update %s"
+          git push --set-upstream origin "$branch"
+          gh pr create --base ${{ github.ref_name }} --title "Update $VERSION" --body ""
