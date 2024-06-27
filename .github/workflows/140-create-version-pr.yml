@@ -34,7 +34,26 @@ jobs:
       # https://github.com/actions/setup-node
       - uses: actions/setup-node@v4
         with:
-          node-version-file: '.node-version'
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: ./package-lock.json
+
+      - name: Decide version
+        id: meta
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: "${{ inputs.versionMajor }}.${{ inputs.versionMinor }}.${{ inputs.versionPatch }}"
+        run: |
+          npm version "$VERSION" --no-git-tag-version
+          version=$(node -p "require('./package.json').version")
+          bash ./.github/scripts/can-release.bash "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - run: npm ci
+
+      - run: npm test
+
+      - run: npm run build
 
       # https://github.com/actions/checkout/issues/13#issuecomment-724415212
       - name: Set up git user
@@ -44,11 +63,18 @@ jobs:
 
       - name: Create a pull request
         env:
+          BASE: ${{ github.ref_name }}
           GH_TOKEN: ${{ github.token }}
-          VERSION: "${{ inputs.versionMajor }}.${{ inputs.versionMinor }}.${{ inputs.versionPatch }}"
+          VERSION: ${{ steps.meta.outputs.version }}
         run: |
           branch="feature/$VERSION"
+          message="Update $VERSION"
+
           git switch --create "$branch"
-          npm version "$VERSION" --message "Update %s"
+          git add --all compiled/*
+          git add package-lock.json
+          git add package.json
+          git commit --message "$message"
           git push --set-upstream origin "$branch"
-          gh pr create --base ${{ github.ref_name }} --title "Update $VERSION" --body ""
+
+          gh pr create --assignee "@me" --base "$BASE" --title "$message" --body ""
