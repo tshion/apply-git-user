@@ -4,15 +4,15 @@ on:
   workflow_dispatch:
     inputs:
       versionMajor:
-        description: 'バージョン情報: major'
+        description: "バージョン情報: major"
         required: true
         type: string
       versionMinor:
-        description: 'バージョン情報: minor'
+        description: "バージョン情報: minor"
         required: true
         type: string
       versionPatch:
-        description: 'バージョン情報: patch'
+        description: "バージョン情報: patch"
         required: true
         type: string
 
@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  create-version-pr:
+  create-pr:
     if: ${{ github.ref_type == 'branch' }}
     runs-on: ubuntu-latest
     permissions:
