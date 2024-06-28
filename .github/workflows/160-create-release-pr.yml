@@ -1,0 +1,45 @@
+name: 160 Create release pull request
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  test-action:
+    if: ${{ github.ref_name == 'develop' }}
+    uses: ./.github/workflows/160a-test-action.yml
+
+
+  create-pr:
+    needs: test-action
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
+      # https://github.com/actions/setup-node
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+          cache-dependency-path: ./package-lock.json
+
+      - name: Get version name
+        id: meta
+        run: |
+          version=$(node -p "require('./package.json').version")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Create pull request
+        env:
+          BODY: "result: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          GH_TOKEN: ${{ github.token }}
+          TITLE: "Merge ${{ steps.meta.outputs.name }}"
+        run: |
+          gh pr create --assignee "@me" --base released --title "$TITLE" --body "$BODY"
