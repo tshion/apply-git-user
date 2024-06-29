@@ -50,7 +50,7 @@ jobs:
       - working-directory: ./main/
         run: bash ../tools/.github/scripts/display.bash
 
-      - uses: ./
+      - uses: ./tools/
         with:
           global: TRUE
           user: ACTIONS-USER
@@ -82,7 +82,7 @@ jobs:
       - working-directory: ./main/
         run: bash ../tools/.github/scripts/display.bash
 
-      - uses: ./
+      - uses: ./tools/
         with:
           global: TRUE
           user: GITHUB-ACTIONS
@@ -114,7 +114,7 @@ jobs:
       - working-directory: ./main/
         run: bash ../tools/.github/scripts/display.bash
 
-      - uses: ./
+      - uses: ./tools/
         with:
           global: TRUE
           user: LATEST-COMMIT
@@ -148,7 +148,7 @@ jobs:
       - working-directory: ./main/
         run: bash ../tools/.github/scripts/display.bash
 
-      - uses: ./
+      - uses: ./tools/
         with:
           global: TRUE
           user: SPECIFIC
