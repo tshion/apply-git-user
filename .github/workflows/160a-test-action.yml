@@ -47,13 +47,13 @@ jobs:
           path: ./main/
           user: actions-user
       - working-directory: ./main/
-        run: bash ./.github/workflows/scripts/display.bash
+        run: bash ../tools/.github/workflows/scripts/display.bash
 
       - uses: ./
         with:
           global: TRUE
           user: ACTIONS-USER
-      - run: bash ./.github/workflows/scripts/display.bash
+      - run: bash ./tools/.github/workflows/scripts/display.bash
 
 
   github-actions:
@@ -78,13 +78,13 @@ jobs:
           path: ./main/
           user: github-actions
       - working-directory: ./main/
-        run: bash ./.github/workflows/scripts/display.bash
+        run: bash ../tools/.github/workflows/scripts/display.bash
 
       - uses: ./
         with:
           global: TRUE
           user: GITHUB-ACTIONS
-      - run: bash ./.github/workflows/scripts/display.bash
+      - run: bash ./tools/.github/workflows/scripts/display.bash
 
 
   latest-commit:
@@ -109,13 +109,13 @@ jobs:
           path: ./main/
           user: latest-commit
       - working-directory: ./main/
-        run: bash ./.github/workflows/scripts/display.bash
+        run: bash ../tools/.github/workflows/scripts/display.bash
 
       - uses: ./
         with:
           global: TRUE
           user: LATEST-COMMIT
-      - run: bash ./.github/workflows/scripts/display.bash
+      - run: bash ./tools/.github/workflows/scripts/display.bash
 
 
   specific:
@@ -142,7 +142,7 @@ jobs:
           email: hoge@example.com
           name: hoge
       - working-directory: ./main/
-        run: bash ./.github/workflows/scripts/display.bash
+        run: bash ../tools/.github/workflows/scripts/display.bash
 
       - uses: ./
         with:
@@ -150,4 +150,4 @@ jobs:
           user: SPECIFIC
           email: hoge@example.com
           name: hoge
-      - run: bash ./.github/workflows/scripts/display.bash
+      - run: bash ./tools/.github/workflows/scripts/display.bash
