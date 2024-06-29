@@ -116,6 +116,7 @@ jobs:
 
       - uses: ./tools/
         with:
+          path: ./tools/
           global: TRUE
           user: LATEST-COMMIT
       - run: bash ./tools/.github/scripts/display.bash
