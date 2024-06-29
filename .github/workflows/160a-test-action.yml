@@ -1,0 +1,158 @@
+name: 160a Test action
+
+on:
+  workflow_call:
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-160a
+  cancel-in-progress: true
+
+jobs:
+  config:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      configs: ${{ steps.result.outputs.configs }}
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
+      - id: result
+        run: |
+          ruby ./.github/scripts/create-test-config.rb
+          echo "configs=$(cat config.json)" >> "$GITHUB_OUTPUT"
+
+
+  actions-user:
+    needs: config
+    strategy:
+      matrix: ${{ fromJson(needs.config.outputs.configs) }}
+      max-parallel: 1
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: tools
+
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: main
+
+      - uses: ./tools/
+        with:
+          path: ./main/
+          user: actions-user
+      - working-directory: ./main/
+        run: bash ../tools/.github/scripts/display.bash
+
+      - uses: ./tools/
+        with:
+          global: TRUE
+          user: ACTIONS-USER
+      - run: bash ./tools/.github/scripts/display.bash
+
+
+  github-actions:
+    needs: config
+    strategy:
+      matrix: ${{ fromJson(needs.config.outputs.configs) }}
+      max-parallel: 1
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: tools
+
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: main
+
+      - uses: ./tools/
+        with:
+          path: ./main/
+          user: github-actions
+      - working-directory: ./main/
+        run: bash ../tools/.github/scripts/display.bash
+
+      - uses: ./tools/
+        with:
+          global: TRUE
+          user: GITHUB-ACTIONS
+      - run: bash ./tools/.github/scripts/display.bash
+
+
+  latest-commit:
+    needs: config
+    strategy:
+      matrix: ${{ fromJson(needs.config.outputs.configs) }}
+      max-parallel: 1
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: tools
+
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: main
+
+      - uses: ./tools/
+        with:
+          path: ./main/
+          user: latest-commit
+      - working-directory: ./main/
+        run: bash ../tools/.github/scripts/display.bash
+
+      - uses: ./tools/
+        with:
+          path: ./tools/
+          global: TRUE
+          user: LATEST-COMMIT
+      - run: bash ./tools/.github/scripts/display.bash
+
+
+  specific:
+    needs: config
+    strategy:
+      matrix: ${{ fromJson(needs.config.outputs.configs) }}
+      max-parallel: 1
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: tools
+
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+        with:
+          path: main
+
+      - uses: ./tools/
+        with:
+          path: ./main/
+          user: specific
+          email: hoge@example.com
+          name: hoge
+      - working-directory: ./main/
+        run: bash ../tools/.github/scripts/display.bash
+
+      - uses: ./tools/
+        with:
+          global: TRUE
+          user: SPECIFIC
+          email: hoge@example.com
+          name: hoge
+      - run: bash ./tools/.github/scripts/display.bash
