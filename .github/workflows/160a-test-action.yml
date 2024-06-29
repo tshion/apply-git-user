@@ -29,6 +29,7 @@ jobs:
     needs: config
     strategy:
       matrix: ${{ fromJson(needs.config.outputs.configs) }}
+      max-parallel: 1
     runs-on: ${{ matrix.os }}
     timeout-minutes: 5
     steps:
@@ -60,6 +61,7 @@ jobs:
     needs: config
     strategy:
       matrix: ${{ fromJson(needs.config.outputs.configs) }}
+      max-parallel: 1
     runs-on: ${{ matrix.os }}
     timeout-minutes: 5
     steps:
@@ -91,6 +93,7 @@ jobs:
     needs: config
     strategy:
       matrix: ${{ fromJson(needs.config.outputs.configs) }}
+      max-parallel: 1
     runs-on: ${{ matrix.os }}
     timeout-minutes: 5
     steps:
@@ -122,6 +125,7 @@ jobs:
     needs: config
     strategy:
       matrix: ${{ fromJson(needs.config.outputs.configs) }}
+      max-parallel: 1
     runs-on: ${{ matrix.os }}
     timeout-minutes: 5
     steps:
