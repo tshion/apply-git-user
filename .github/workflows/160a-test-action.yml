@@ -13,18 +13,18 @@ jobs:
   config:
     runs-on: ubuntu-latest
     outputs:
-      images: ${{ steps.result.outputs.images }}
+      configs: ${{ steps.result.outputs.configs }}
     steps:
       - id: result
         run: |
-          ruby ./.github/scripts/get-runner-images.rb
-          echo "images=$(cat config.json)" >> "$GITHUB_OUTPUT"
+          ruby ./.github/scripts/create-test-config.rb
+          echo "configs=$(cat config.json)" >> "$GITHUB_OUTPUT"
 
 
   actions-user:
     needs: config
     strategy:
-      matrix: ${{ fromJson(needs.config.outputs.images) }}
+      matrix: ${{ fromJson(needs.config.outputs.configs) }}
     runs-on: ${{ matrix.os }}
     steps:
       # https://github.com/actions/checkout
@@ -54,7 +54,7 @@ jobs:
   github-actions:
     needs: config
     strategy:
-      matrix: ${{ fromJson(needs.config.outputs.images) }}
+      matrix: ${{ fromJson(needs.config.outputs.configs) }}
     runs-on: ${{ matrix.os }}
     steps:
       # https://github.com/actions/checkout
@@ -84,7 +84,7 @@ jobs:
   latest-commit:
     needs: config
     strategy:
-      matrix: ${{ fromJson(needs.config.outputs.images) }}
+      matrix: ${{ fromJson(needs.config.outputs.configs) }}
     runs-on: ${{ matrix.os }}
     steps:
       # https://github.com/actions/checkout
@@ -114,7 +114,7 @@ jobs:
   specific:
     needs: config
     strategy:
-      matrix: ${{ fromJson(needs.config.outputs.images) }}
+      matrix: ${{ fromJson(needs.config.outputs.configs) }}
     runs-on: ${{ matrix.os }}
     steps:
       # https://github.com/actions/checkout
