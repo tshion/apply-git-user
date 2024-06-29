@@ -15,6 +15,9 @@ jobs:
     outputs:
       configs: ${{ steps.result.outputs.configs }}
     steps:
+      # https://github.com/actions/checkout
+      - uses: actions/checkout@v4
+
       - id: result
         run: |
           ruby ./.github/scripts/create-test-config.rb

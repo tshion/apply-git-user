@@ -63,6 +63,7 @@ jobs:
 
       - name: Create a pull request
         env:
+          ASSIGNEE: tshion
           BASE: ${{ github.ref_name }}
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.meta.outputs.version }}
@@ -77,4 +78,4 @@ jobs:
           git commit --message "$message"
           git push --set-upstream origin "$branch"
 
-          gh pr create --assignee "@me" --base "$BASE" --title "$message" --body ""
+          gh pr create --assignee "$ASSIGNEE" --base "$BASE" --title "$message" --body ""
