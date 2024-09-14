@@ -20,3 +20,6 @@ updates:
       day: "tuesday"
     assignees:
       - "tshion"
+    ignore:
+      - dependency-name: "@types/node"
+        versions: [ ">=21.0.0" ]
