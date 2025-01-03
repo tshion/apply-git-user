@@ -117,11 +117,14 @@ jobs:
 
       - name: Create a file for pull request body
         shell: ruby {0}
+        env:
+          NOTE: ${{ fromJson(steps.notes.outputs.response).body }}
+          URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          text = <<BODY
-            Test result: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          text = <<"BODY"
+            Test result: "#{ENV['URL']}"
 
-            ${{ fromJson(steps.notes.outputs.response).body }}
+            "#{ENV['NOTE']}"
           BODY
           File.open("PR_BODY", "w") { |file|
             file.write(text)
