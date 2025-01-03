@@ -122,9 +122,9 @@ jobs:
           URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           text = <<"BODY"
-            Test result: "#{ENV['URL']}"
+            Test result: #{ENV['URL']}
 
-            "#{ENV['NOTE']}"
+            #{ENV['NOTE']}
           BODY
           File.open("PR_BODY", "w") { |file|
             file.write(text)
