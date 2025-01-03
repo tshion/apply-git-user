@@ -1,6 +1,10 @@
-name: 160 Create release pull request
+name: Prepare a GitHub release note
 
 on:
+  push:
+    branches:
+      - released
+
   workflow_dispatch:
 
 concurrency:
@@ -8,18 +12,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test-action:
-    if: ${{ github.ref_name == 'develop' }}
-    uses: ./.github/workflows/160a-test-action.yml
-
-
-  create-pr:
-    needs: test-action
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+  preparation:
+    if: ${{ github.ref_type == 'branch' }}
+    runs-on: ubuntu-24.04
     permissions:
-      contents: read
-      pull-requests: write
+      contents: write
+    timeout-minutes: 5
     steps:
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
@@ -37,11 +35,11 @@ jobs:
           version=$(node -p "require('./package.json').version")
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Create pull request
+      - name: Create draft release notes
         env:
-          ASSIGNEE: tshion
-          BODY: "result: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           GH_TOKEN: ${{ github.token }}
-          TITLE: "Merge ${{ steps.meta.outputs.version }}"
+          VERSION: ${{ steps.meta.outputs.version }}
         run: |
-          gh pr create --assignee "$ASSIGNEE" --base released --title "$TITLE" --body "$BODY"
+          git tag "$VERSION"
+          git push origin "$VERSION"
+          gh release create "$VERSION" --draft --generate-notes --title "$VERSION"

@@ -1,23 +1,36 @@
-name: 160a Test action
+name: Test action
 
 on:
   workflow_call:
+    inputs:
+      git_ref:
+        type: string
+        required: true
+        description: Git タグ or ブランチ名
 
   workflow_dispatch:
+    inputs:
+      git_ref:
+        type: string
+        required: true
+        default: released
+        description: Git タグ or ブランチ名
 
 concurrency:
-  group: ${{ github.workflow }}-160a
+  group: ${{ github.workflow }}-test-action
   cancel-in-progress: true
 
 jobs:
   config:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 3
     outputs:
       configs: ${{ steps.result.outputs.configs }}
     steps:
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.git_ref }}
 
       - id: result
         run: |
@@ -37,11 +50,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: tools
+          ref: ${{ inputs.git_ref }}
 
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
         with:
           path: main
+          ref: ${{ inputs.git_ref }}
 
       - uses: ./tools/
         with:
@@ -69,11 +84,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: tools
+          ref: ${{ inputs.git_ref }}
 
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
         with:
           path: main
+          ref: ${{ inputs.git_ref }}
 
       - uses: ./tools/
         with:
@@ -101,11 +118,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: tools
+          ref: ${{ inputs.git_ref }}
 
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
         with:
           path: main
+          ref: ${{ inputs.git_ref }}
 
       - uses: ./tools/
         with:
@@ -134,11 +153,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: tools
+          ref: ${{ inputs.git_ref }}
 
       # https://github.com/actions/checkout
       - uses: actions/checkout@v4
         with:
           path: main
+          ref: ${{ inputs.git_ref }}
 
       - uses: ./tools/
         with:
