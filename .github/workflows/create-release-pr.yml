@@ -41,21 +41,30 @@ jobs:
           cache: npm
           cache-dependency-path: ./package-lock.json
 
-      - name: Set version & format branch name
+      - name: Set version & Format meta data
         id: meta
         env:
-          VERSION: "${{ inputs.versionMajor }}.${{ inputs.versionMinor }}.${{ inputs.versionPatch }}"
+          MAJOR: ${{ inputs.versionMajor }}
+          MINOR: ${{ inputs.versionMinor }}
+          PATCH: ${{ inputs.versionPatch }}
         run: |
-          npm version "$VERSION" --no-git-tag-version
+          npm version "${MAJOR}.${MINOR}.${PATCH}" --no-git-tag-version
           version=$(node -p "require('./package.json').version")
           echo "version=$version" >> "$GITHUB_OUTPUT"
           echo "branch=feature/$version" >> "$GITHUB_OUTPUT"
 
-      - name: Can release
+      # https://github.com/tshion/can-create-release
+      - uses: tshion/can-create-release@0.1.1
+        with:
+          tag: ${{ steps.meta.outputs.version }}
+
+      - name: Create a working git branch
         env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ steps.meta.outputs.version }}
-        run: bash .github/scripts/can-release.bash "$TAG"
+          BRANCH: ${{ steps.meta.outputs.branch }}
+        run: |
+          git switch --create "$BRANCH"
+          git fetch origin released
+          git merge --allow-unrelated-histories --strategy=ours origin/released
 
       - run: npm ci
 
@@ -69,12 +78,11 @@ jobs:
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-      - name: git add & push
+      - name: git commit & push
         env:
           BRANCH: ${{ steps.meta.outputs.branch }}
           VERSION: ${{ steps.meta.outputs.version }}
         run: |
-          git switch --create "$BRANCH"
           git add compiled
           git add package.json
           git add package-lock.json
