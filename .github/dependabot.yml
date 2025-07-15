@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: "weekly"
       day: "tuesday"
-    assignees:
+    reviewers:
       - "tshion"
 
   - package-ecosystem: "npm"
@@ -18,7 +18,7 @@ updates:
     schedule:
       interval: "weekly"
       day: "tuesday"
-    assignees:
+    reviewers:
       - "tshion"
     ignore:
       - dependency-name: "@types/node"
