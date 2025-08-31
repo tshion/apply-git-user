@@ -2,7 +2,7 @@
     "name": "apply-git-user",
     "description": "Apply a well-known git user to `git config user.*`.",
     "engines": {
-        "node": ">=20"
+        "node": ">=24"
     },
     "exports": {
         ".": "./compiled/index.js"
@@ -18,7 +18,7 @@
         "@actions/exec": "^1.1.1"
     },
     "devDependencies": {
-        "@types/node": "^20.19.11",
+        "@types/node": "^24.0.0",
         "@vercel/ncc": "^0.38.3",
         "tsx": "^4.20.5",
         "typescript": "^5.9.2"
