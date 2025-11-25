@@ -28,7 +28,7 @@ jobs:
       configs: ${{ steps.result.outputs.configs }}
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.git_ref }}
 
@@ -47,13 +47,13 @@ jobs:
     timeout-minutes: 5
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: tools
           ref: ${{ inputs.git_ref }}
 
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: main
           ref: ${{ inputs.git_ref }}
@@ -81,13 +81,13 @@ jobs:
     timeout-minutes: 5
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: tools
           ref: ${{ inputs.git_ref }}
 
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: main
           ref: ${{ inputs.git_ref }}
@@ -115,13 +115,13 @@ jobs:
     timeout-minutes: 5
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: tools
           ref: ${{ inputs.git_ref }}
 
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: main
           ref: ${{ inputs.git_ref }}
@@ -150,13 +150,13 @@ jobs:
     timeout-minutes: 5
     steps:
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: tools
           ref: ${{ inputs.git_ref }}
 
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           path: main
           ref: ${{ inputs.git_ref }}
